@@ -1,5 +1,6 @@
 from cryptography.fernet import Fernet
 import os
+import scripts.csvmanip as csvm
 
 path = __file__.replace("\scripts\endecrypt.py","")
 
@@ -16,6 +17,8 @@ def encrypt():
             keyfp.close()
 
     fernet = Fernet(key)
+    if not os.path.exists(f"{path}\\files\\passwords.csv"):
+        csvm.generate()
     with open(f"{path}\\files\\passwords.csv", "rb") as passwordfp:
         passwords = passwordfp.read()
         passwordfp.close()
@@ -38,6 +41,10 @@ def decrypt():
             keyfp.close()
 
     fernet = Fernet(key)
+
+    if not os.path.exists(f"{path}\\files\\passwords.csv"):
+        csvm.generate()
+
     with open(f"{path}\\files\\passwords.csv", "rb") as passwordfp:
         passwords = passwordfp.read()
         passwordfp.close()
